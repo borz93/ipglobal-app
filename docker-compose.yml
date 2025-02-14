@@ -1,0 +1,84 @@
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_app
+    working_dir: /var/www/html/ipglobal_app
+    volumes:
+      - .:/var/www/html
+    environment:
+      DATABASE_URL: mysql://symfony:symfony@mysql_db:3306/symfony_db
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq_server:5672
+      APP_ENV: dev
+      APP_SECRET: your_app_secret
+    networks:
+      - app_network
+    depends_on:
+      - mysql
+      - rabbitmq
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_server
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html/ipglobal_app
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app_network
+    depends_on:
+      - php
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony_db
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql_db
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - app_network
+    depends_on:
+      - mysql
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_server
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  rabbitmq_data:
