@@ -126,7 +126,10 @@ Se añade un sleep de duración variable para simular el procesamiento.
       - Escalar el sistema fácilmente añadiendo más consumidores.
       - Manejar errores de manera robusta mediante colas de errores.
 
-5. **Docker y phpMyAdmin**:
+5. **Documentación de código**
+   - Se ha intentado comentar de manera eficiente el código, asi como las funciones.
+
+6. **Docker y phpMyAdmin**:
     - Docker se utilizó, por un lado, por ser requisito, y por el otro para crear un entorno de desarrollo consistente y fácil de configurar.
     - phpMyAdmin se añadió para facilitar la visualización de la base de datos durante el desarrollo y las pruebas posteriores.
 
