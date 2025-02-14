@@ -45,10 +45,10 @@ a pesar de que usa más recursos que Chrome con 3 pestañas simultáneas.
 
 ## Tecnologías utilizadas
 
-- **Symfony 6.4**: Framework PHP para aplicaciones escalables.
+- **Symfony 6.4**: Framework PHP.
 - **RabbitMQ**: Broker de mensajes para comunicación asíncrona.
-- **Docker**: Para containerización y despliegue sencillo.
-- **MySQL**: Base de datos principal para almacenar pedidos y stock.
+- **Docker**: Para containerización y despliegue.
+- **MySQL**: Base de datos.
 - **PHPUnit**: Para pruebas unitarias y funcionales.
 - **phpMyAdmin**: Herramienta de gestión visual para MySQL.
 
@@ -292,9 +292,9 @@ Este proyecto está bajo la licencia MIT.
 
 ## Agradecimientos
 
-- Symfony, RabbitMQ y demás stack utilizado en la prueba
+- Symfony, RabbitMQ y demás stack utilizado en la prueba.
 - Docker por hacer la vida más sencilla.
 - phpMyAdmin por evitar crear un visualizador de datos (punto de mejora de la aplicación)
 - Y en general, la oportunidad de realizar esta prueba, que tanto para bien o mal,
-me ha servido para aprender o usar algunas cosillas
+me ha servido para aprender o usar algunas cosillas.
 - A Dios, Yahve, Ala, Shiva, Buda, Cthulhu... Por si acaso.
