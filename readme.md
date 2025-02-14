@@ -1,4 +1,4 @@
-# Sistema de Procesamiento de Pedidos con Symfony y RabbitMQ
+# Sistema de procesamiento de pedidos con Symfony y RabbitMQ
 
 Este proyecto es una aplicación basada en Symfony que demuestra cómo procesar pedidos de forma asíncrona usando RabbitMQ. Simula un sistema de e-commerce donde los pedidos se envían a una cola de mensajes para su procesamiento, y el stock se gestiona de manera concurrente.
 
@@ -8,14 +8,14 @@ Este proyecto es una aplicación basada en Symfony que demuestra cómo procesar 
 
 1. [Características](#características)
 2. [Entorno utilizado](#entorno-utilizado)
-3. [Tecnologías Utilizadas](#tecnologías-utilizadas)
-4. [¿Por Qué Estas Elecciones?](#por-qué-estas-elecciones)
-5. [Diseño y Lógica del Proyecto](#diseño-y-lógica-del-proyecto)
+3. [Tecnologías utilizadas](#tecnologías-utilizadas)
+4. [¿Por qué estas elecciones?](#por-qué-estas-elecciones)
+5. [Diseño y lógica del proyecto](#diseño-y-lógica-del-proyecto)
 6. [Instalación](#instalación)
 7. [Configuración](#configuración)
 8. [Uso](#uso)
 9. [Testing](#testing)
-10. [Estructura del Proyecto](#estructura-del-proyecto)
+10. [Estructura del proyecto](#estructura-del-proyecto)
 11. [Licencia](#licencia)
 
 ---
@@ -42,7 +42,7 @@ a pesar de que usa más recursos que Chrome con 3 pestañas simultáneas.
 
 ---
 
-## Tecnologías Utilizadas
+## Tecnologías utilizadas
 
 - **Symfony 6.4**: Framework PHP para aplicaciones escalables.
 - **RabbitMQ**: Broker de mensajes para comunicación asíncrona.
@@ -53,7 +53,7 @@ a pesar de que usa más recursos que Chrome con 3 pestañas simultáneas.
 
 ---
 
-## ¿Por Qué Estas Elecciones?
+## ¿Por qué estas elecciones?
 
 El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi como usar el stack indicado en la oferta.
 
@@ -79,9 +79,9 @@ El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi
 
 ---
 
-## Diseño y Lógica del Proyecto
+## Diseño y lógica del proyecto
 
-### Flujo de la Aplicación
+### Flujo de la aplicación
 
 1. **Creación de un Pedido**:
     - Cuando un cliente realiza un pedido, se ejecuta el comando `app:send-order`. Este comando genera un mensaje con los detalles del pedido (ID del pedido, ID del usuario, ID del producto y timestamp) y lo envía a la cola de RabbitMQ.
@@ -102,13 +102,13 @@ El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi
 
 ---
 
-### Decisiones de Diseño
+### Decisiones de diseño
 
-1. **Dos Entidades Principales**:
+1. **Dos entidades principales**:
     - **Order**: Representa un pedido con su estado (pendiente, aprobado, rechazado) y detalles (ID del pedido, ID del usuario, etc.).
     - **Stock**: Representa el stock de un producto. Se decidió separar el stock en su propia entidad para facilitar su gestión y evitar acoplamiento con la lógica de pedidos.
 
-2. **Separación de Responsabilidades**:
+2. **Separación de responsabilidades**:
     - **Repositorios**: Se encargan de interactuar con la base de datos (por ejemplo, buscar o crear una orden). Esto permite mantener la lógica de negocio separada del acceso a datos.
     - **Servicios**: Contienen la lógica de negocio (por ejemplo, verificar y reducir el stock). Esto hace que el código sea más modular y fácil de probar.
 
@@ -126,20 +126,20 @@ El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi
 
 ### Funcionamiento Interno
 
-1. **Mensajes y Colas**:
+1. **Mensajes y colas**:
     - Cada pedido se convierte en un mensaje que se envía a RabbitMQ. Los mensajes contienen toda la información necesaria para procesar el pedido.
     - RabbitMQ garantiza que los mensajes se entreguen a los consumidores en orden y sin pérdidas.
 
-2. **Concurrencia y Bloqueos**:
+2. **Concurrencia y bloqueos**:
     - Para evitar condiciones de carrera al reducir el stock, se utiliza un bloqueo pesimista (`PESSIMISTIC_WRITE`). Esto asegura que solo un consumidor pueda modificar el stock de un producto a la vez.
 
-3. **Logs y Monitoreo**:
+3. **Logs y monitoreo**:
     - Todas las operaciones importantes (creación de pedidos, procesamiento, errores) se registran en logs para facilitar la depuración y el monitoreo.
     - RabbitMQ proporciona una interfaz gráfica para monitorear las colas y los mensajes.
 
 ---
 
-### Beneficios de Este Enfoque
+### Beneficios del enfoque
 
 - **Escalabilidad**: El enfoque ha sido que el sistema pueda manejar un alto volumen de pedidos añadiendo más consumidores (eso espero).
 - **Robustez**: Los errores se manejan de manera automática y los mensajes fallidos no se pierden.
@@ -159,7 +159,7 @@ asi como la posterior comprobación de la prueba técnica.
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tu-usuario/ipglobal-app.git
+   git clone https://github.com/borz93/ipglobal-app.git
    cd ipglobal-app
    ```
 
@@ -182,7 +182,7 @@ asi como la posterior comprobación de la prueba técnica.
 
 ## Configuración
 
-### Variables de Entorno
+### Variables de entorno
 
 | Variable          | Descripción                                  | Valor por Defecto                          |
 |-------------------|----------------------------------------------|--------------------------------------------|
@@ -195,7 +195,7 @@ asi como la posterior comprobación de la prueba técnica.
 
 ## Uso
 
-### Enviar un Pedido
+### Enviar un pedido
 
 Envía un pedido a la cola con:
 ```bash
@@ -206,21 +206,21 @@ Envía un pedido a la cola con:
   docker-compose exec php bin/console app:send-order 1
 ```
 
-### Resetear el Stock
+### Resetear el stock
 
 Restablece el stock de todos los productos a 10:
 ```bash
   docker-compose exec php bin/console app:reset-stock
 ```
 
-### Procesar Pedidos
+### Procesar pedidos
 
 Ejecuta el consumidor para procesar pedidos:
 ```bash
   docker-compose exec php bin/console messenger:consume async -vv
 ```
 
-### Simulación de Múltiples Pedidos
+### Simulación de múltiples pedidos
 
 Envía 10 pedidos para el producto ID 1:
 ```bash
@@ -231,7 +231,8 @@ Envía 10 pedidos para el producto ID 1:
 
 ## Testing
 
-El proyecto incluye pruebas unitarias y funcionales. Se pueden añadir bastantes más, pero sirven para ejemplificar el uso de PHPUnit.
+El proyecto incluye pruebas unitarias y funcionales.
+Se pueden añadir bastantes más, pero sirven para ejemplificar el uso de phpUnit.
 
 Para ejecutarlas:
 
@@ -243,7 +244,7 @@ Para ejecutarlas:
 
 ---
 
-## Estructura del Proyecto
+## Estructura del proyecto
 
 ipglobal_app/
 
