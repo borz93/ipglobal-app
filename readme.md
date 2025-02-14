@@ -108,7 +108,9 @@ El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi
 
 1. **Dos entidades principales**:
     - **Order**: Representa un pedido con su estado (pendiente, aprobado, rechazado) y detalles (ID del pedido, ID del usuario, etc.).
+      - Cuenta con su tabla en base de datos con mismo nombre.
     - **Stock**: Representa el stock de un producto. Se decidió separar el stock en su propia entidad para facilitar su gestión y evitar acoplamiento con la lógica de pedidos.
+      - Cuenta con su tabla en base de datos con mismo nombre.
 
 2. **Separación de responsabilidades**:
     - **Repositorios**: Se encargan de interactuar con la base de datos (por ejemplo, buscar o crear una orden). Esto permite mantener la lógica de negocio separada del acceso a datos.
