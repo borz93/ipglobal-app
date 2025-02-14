@@ -17,6 +17,7 @@ Este proyecto es una aplicación basada en Symfony que demuestra cómo procesar 
 9. [Testing](#testing)
 10. [Estructura del proyecto](#estructura-del-proyecto)
 11. [Licencia](#licencia)
+12. [Agradecimientos](#agradecimientos)
 
 ---
 
