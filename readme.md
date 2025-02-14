@@ -130,7 +130,8 @@ El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi
 
 1. **Mensajes y colas**:
     - Cada pedido se convierte en un mensaje que se envía a RabbitMQ. Los mensajes contienen toda la información necesaria para procesar el pedido.
-    - RabbitMQ garantiza que los mensajes se entreguen a los consumidores en orden y sin pérdidas.
+      - `order_id` y `user_id` se generan aleatoriamente, para simplificar el escenario.
+    - RabbitMQ se encarga que los mensajes se entreguen a los consumidores en orden y sin pérdidas.
 
 2. **Concurrencia y bloqueos**:
     - Para evitar condiciones de carrera al reducir el stock, se utiliza un bloqueo pesimista (`PESSIMISTIC_WRITE`). Esto asegura que solo un consumidor pueda modificar el stock de un producto a la vez.
