@@ -96,6 +96,7 @@ El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi
 3. **Manejo de Errores**:
     - Si ocurre un error durante el procesamiento (por ejemplo, un problema de conexión a la base de datos), el mensaje se reintenta automáticamente hasta 3 veces.
     - Si el mensaje sigue fallando después de los reintentos, se mueve a una cola de errores (dead-letter queue) para su inspección manual.
+    - Igualmente, se va logueando parte del flujo en el log de Symfony (`var/log/dev.log`), tanto a nivel info como error.
 
 4. **Reset del Stock**:
     - El comando `app:reset-stock` permite restablecer el stock de todos los productos a un valor predeterminado (10). Esto es útil para pruebas y simulaciones.
@@ -206,13 +207,6 @@ Envía un pedido a la cola con:
   docker-compose exec php bin/console app:send-order 1
 ```
 
-### Resetear el stock
-
-Restablece el stock de todos los productos a 10:
-```bash
-  docker-compose exec php bin/console app:reset-stock
-```
-
 ### Procesar pedidos
 
 Ejecuta el consumidor para procesar pedidos:
@@ -222,9 +216,22 @@ Ejecuta el consumidor para procesar pedidos:
 
 ### Simulación de múltiples pedidos
 
-Envía 10 pedidos para el producto ID 1:
+Envía 10 pedidos para el producto ID 1.:
 ```bash
-  for i in {1..10}; do docker-compose exec php bin/console app:send-order 1; done
+  docker-compose exec php bash -c "for i in {1..10}; do bin/console app:send-order 1; done"
+```
+### Resetear el stock
+
+Restablece el stock de todos los productos que existan en la tabla `stock` a 10:
+```bash
+  docker-compose exec php bin/console app:reset-stock
+```
+
+### Entrar en contenedor php
+
+Entrar en el bash del contenedor php
+```bash
+  docker-compose exec php bash
 ```
 
 ---
