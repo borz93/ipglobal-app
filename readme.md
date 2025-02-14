@@ -88,10 +88,11 @@ El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi
     - Cuando un cliente realiza un pedido, se ejecuta el comando `app:send-order`. Este comando genera un mensaje con los detalles del pedido (ID del pedido, ID del usuario, ID del producto y timestamp) y lo envía a la cola de RabbitMQ.
 
 2. **Procesamiento del Pedido**:
-    - Un consumidor (worker) escucha la cola de RabbitMQ y procesa los mensajes uno por uno.
+    - Un consumidor (`OrderMessageHandler`) escucha la cola de RabbitMQ y procesa los mensajes uno por uno.
+Se añade un sleep de duración variable para simular el procesamiento.
     - Para cada pedido, el sistema verifica el stock del producto:
-        - Si hay stock disponible, se aprueba el pedido y se reduce el stock en 1.
-        - Si no hay stock, el pedido se rechaza.
+      - Si hay stock disponible, se aprueba el pedido y se reduce el stock en 1.
+      - Si no hay stock, el pedido se rechaza.
     - El estado del pedido (aprobado o rechazado) se guarda en la base de datos.
 
 3. **Manejo de Errores**:
@@ -112,17 +113,20 @@ El principal motivo es adaptarse a los requerimientos de la prueba técnica, asi
     - **Stock**: Representa el stock de un producto. Se decidió separar el stock en su propia entidad para facilitar su gestión y evitar acoplamiento con la lógica de pedidos.
       - Cuenta con su tabla en base de datos con mismo nombre.
 
-2. **Separación de responsabilidades**:
+2. **Clase separada para los mensajes**
+   - Se crea la clase `OrderMessage`, a modo de entidad, con los atributos del mensaje,
+
+3. **Separación de responsabilidades**:
     - **Repositorios**: Se encargan de interactuar con la base de datos (por ejemplo, buscar o crear una orden). Esto permite mantener la lógica de negocio separada del acceso a datos.
     - **Servicios**: Contienen la lógica de negocio (por ejemplo, verificar y reducir el stock). Esto hace que el código sea más modular y fácil de probar.
 
-3. **Uso de RabbitMQ**:
+4. **Uso de RabbitMQ**:
     - Requisito. Sus funciones son:
       - Desacoplar la creación de pedidos de su procesamiento.
       - Escalar el sistema fácilmente añadiendo más consumidores.
       - Manejar errores de manera robusta mediante colas de errores.
 
-4. **Docker y phpMyAdmin**:
+5. **Docker y phpMyAdmin**:
     - Docker se utilizó, por un lado, por ser requisito, y por el otro para crear un entorno de desarrollo consistente y fácil de configurar.
     - phpMyAdmin se añadió para facilitar la visualización de la base de datos durante el desarrollo y las pruebas posteriores.
 
